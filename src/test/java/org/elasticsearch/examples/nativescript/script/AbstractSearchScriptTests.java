@@ -27,6 +27,7 @@ public class AbstractSearchScriptTests extends ElasticsearchIntegrationTest {
     @Override
     protected Settings nodeSettings(int nodeOrdinal) {
         return ImmutableSettings.settingsBuilder()
+                .put("plugins.load_classpath_plugins", true)
                 .put("gateway.type", "none")
                 .put(super.nodeSettings(nodeOrdinal))
                 .build();

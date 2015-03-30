@@ -53,7 +53,8 @@ p.
 
 bc. plugin=org.elasticsearch.examples.nativescript.plugin.NativeScriptExamplesPlugin
 
-* The plugin can be built using @mvn package@ command. The assembled .zip package can be found in the @target/releases/@ directory and deployed to elasticsearch installation using @plugin -install plugin-name -url path/to/plugin/zip/file@.
+* The plugin can be built using @mvn package@ command. The assembled .zip package can be found in the @target/releases/@ directory and deployed to elasticsearch installation using @{Elasticsearch folder}/bin/plugin --install package --url file:///path/to/plugin/zip/file@.
+* If you have proxy I recommand (remove non used parameter) @mvn package -Dhttp.proxyHost=palc.grosclient.com -Dhttp.proxyPort=8080 -Dhttp.proxyUser=user -Dhttp.proxyPassword=password -Dhttps.proxyHost=palc.grosclient.com -Dhttps.proxyPort=8080 -Dhttps.proxyUser=user -Dhttps.proxyPassword=password@
 
 h2. Adding Native Scripts
 

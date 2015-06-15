@@ -1,3 +1,17 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.elasticsearch.examples.nativescript.script;
 
 import static org.elasticsearch.index.query.QueryBuilders.functionScoreQuery;
@@ -26,7 +40,7 @@ public class PopularityScoreScriptTests extends AbstractSearchScriptTests {
 
     @Test
     public void testPopularityScoring() throws Exception {
-      
+
         // Create a new index
         String mapping = XContentFactory.jsonBuilder().startObject().startObject("type")
                 .startObject("properties")
@@ -34,12 +48,12 @@ public class PopularityScoreScriptTests extends AbstractSearchScriptTests {
                 .startObject("number").field("type", "integer").endObject()
                 .endObject().endObject().endObject()
                 .string();
-        
+
         assertAcked(prepareCreate("test")
                 .addMapping("type", mapping));
 
         List<IndexRequestBuilder> indexBuilders = new ArrayList<IndexRequestBuilder>();
-        
+
         // Index 5 records with non-empty number field
         for (int i = 0; i < 5; i++) {
             indexBuilders.add(
@@ -57,9 +71,9 @@ public class PopularityScoreScriptTests extends AbstractSearchScriptTests {
                             .field("name", "rec " + i)
                             .endObject()));
         }
-        
+
         indexRandom(true, indexBuilders);
-        
+
         Map<String, Object> params = MapBuilder.<String, Object> newMapBuilder().put("field", "number").map();
         // Retrieve first 10 hits
         SearchResponse searchResponse = client().prepareSearch("test")
@@ -69,7 +83,7 @@ public class PopularityScoreScriptTests extends AbstractSearchScriptTests {
                 .setSize(10)
                 .addField("name")
                 .execute().actionGet();
-        
+
         assertNoFailures(searchResponse);
 
         // There should be 10 hist

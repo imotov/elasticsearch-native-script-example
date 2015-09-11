@@ -38,7 +38,6 @@ public abstract class AbstractSearchScriptTests extends ESIntegTestCase {
     @Override
     protected Settings nodeSettings(int nodeOrdinal) {
         return Settings.settingsBuilder()
-                .put("gateway.type", "none")
                 .put("plugin.types", NativeScriptExamplesPlugin.class)
                 .put(super.nodeSettings(nodeOrdinal))
                 .build();

@@ -69,7 +69,8 @@ p.
 * The gradle plugin will automatically create @plugin-descriptor.properties@ for you.
 * If you are not using the standard parent project, you can create this file manually by using this "plugin-descriptor.properties":https://github.com/elastic/elasticsearch/blob/master/dev-tools/src/main/resources/plugin-metadata/plugin-descriptor.properties as a template. You will also need to package the plugin into .zip file, which can be done using maven assemble task and "plugin-assembly.xml":https://github.com/elastic/elasticsearch/blob/master/dev-tools/src/main/resources/plugin-metadata/plugin-assembly.xml assembly definition.
 
-* The plugin can be built using @mvn package@ command. The assembled .zip package can be found in the @target/releases/@ directory and deployed to elasticsearch installation using @plugin -install plugin-name -url path/to/plugin/zip/file@.
+* The plugin can be built using @mvn package@ command. The assembled .zip package can be found in the @target/releases/@ directory and deployed to elasticsearch installation using @{Elasticsearch folder}/bin/plugin --install package --url file:///path/to/plugin/zip/file@.
+* If you have proxy I recommand (remove non used parameter) @mvn package -Dhttp.proxyHost=palc.grosclient.com -Dhttp.proxyPort=8080 -Dhttp.proxyUser=user -Dhttp.proxyPassword=password -Dhttps.proxyHost=palc.grosclient.com -Dhttps.proxyPort=8080 -Dhttps.proxyUser=user -Dhttps.proxyPassword=password@
 
 h2. Migration from 1.x
 

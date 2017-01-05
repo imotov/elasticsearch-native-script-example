@@ -16,7 +16,6 @@ package org.elasticsearch.examples.nativescript.script;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.lucene.search.Scorer;

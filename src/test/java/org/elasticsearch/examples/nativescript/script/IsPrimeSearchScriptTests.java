@@ -19,6 +19,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
+import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.sort.SortOrder;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class IsPrimeSearchScriptTests extends AbstractSearchScriptTestCase {
         params.put("field", "number");
         // Retrieve first 10 prime records
         SearchResponse searchResponse = client().prepareSearch("test")
-            .setQuery(scriptQuery(new Script("is_prime", ScriptService.ScriptType.INLINE, "native", params)))
+            .setQuery(scriptQuery(new Script(ScriptType.INLINE, "native", "is_prime", params)))
             .setFetchSource("name", null)
             .setSize(10)
             .addSort("number", SortOrder.ASC)
@@ -97,7 +98,7 @@ public class IsPrimeSearchScriptTests extends AbstractSearchScriptTestCase {
         params.put("certainty", 0);
         // Check certainty parameter - with certainty == 0, it should return all numbers, but only if numbers are present
         searchResponse = client().prepareSearch("test")
-            .setQuery(scriptQuery(new Script("is_prime", ScriptService.ScriptType.INLINE, "native", params)))
+            .setQuery(scriptQuery(new Script(ScriptType.INLINE, "native", "is_prime", params)))
             .setFetchSource("name", null)
             .setSize(10)
             .addSort("number", SortOrder.ASC)

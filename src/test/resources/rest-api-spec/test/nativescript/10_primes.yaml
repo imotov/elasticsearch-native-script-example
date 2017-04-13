@@ -40,9 +40,10 @@ setup:
                     constant_score:
                         filter:
                             script:
-                                script: is_prime
-                                lang: native
-                                params:
-                                    field: number
+                                script:
+                                    inline: is_prime
+                                    lang: native
+                                    params:
+                                        field: number
 
     - match: { hits.total: 3}

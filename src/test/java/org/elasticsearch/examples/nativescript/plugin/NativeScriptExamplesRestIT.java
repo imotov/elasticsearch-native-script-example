@@ -15,21 +15,20 @@ package org.elasticsearch.examples.nativescript.plugin;
 
 import com.carrotsearch.randomizedtesting.annotations.Name;
 import com.carrotsearch.randomizedtesting.annotations.ParametersFactory;
-import org.elasticsearch.test.rest.ESRestTestCase;
-import org.elasticsearch.test.rest.RestTestCandidate;
-import org.elasticsearch.test.rest.parser.RestTestParseException;
+import org.elasticsearch.test.rest.yaml.ClientYamlTestCandidate;
+import org.elasticsearch.test.rest.yaml.ESClientYamlSuiteTestCase;
 
 import java.io.IOException;
 
-public class NativeScriptExamplesRestIT extends ESRestTestCase {
+public class NativeScriptExamplesRestIT extends ESClientYamlSuiteTestCase {
 
-    public NativeScriptExamplesRestIT(@Name("yaml") RestTestCandidate testCandidate) {
+    public NativeScriptExamplesRestIT(@Name("yaml") ClientYamlTestCandidate testCandidate) {
         super(testCandidate);
     }
 
     @ParametersFactory
-    public static Iterable<Object[]> parameters() throws IOException, RestTestParseException {
-        return ESRestTestCase.createParameters(0, 1);
+    public static Iterable<Object[]> parameters() throws IOException {
+        return ESClientYamlSuiteTestCase.createParameters();
     }
 }
 

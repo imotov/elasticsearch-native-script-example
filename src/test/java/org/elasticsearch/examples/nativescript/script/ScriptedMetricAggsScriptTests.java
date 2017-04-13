@@ -19,8 +19,10 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
+import org.elasticsearch.script.ScriptType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
@@ -63,10 +65,10 @@ public class ScriptedMetricAggsScriptTests extends AbstractSearchScriptTestCase 
                 .setQuery(matchAllQuery())
                 .setSize(0)
                 .addAggregation(scriptedMetric("profit")
-                        .initScript(new Script("stockaggs_init", ScriptService.ScriptType.INLINE, "native", null))
-                        .mapScript(new Script("stockaggs_map", ScriptService.ScriptType.INLINE, "native", null))
-                        .combineScript(new Script("stockaggs_combine", ScriptService.ScriptType.INLINE, "native", null))
-                        .reduceScript(new Script("stockaggs_reduce", ScriptService.ScriptType.INLINE, "native", null)))
+                        .initScript(new Script(ScriptType.INLINE, "native", "stockaggs_init", Collections.emptyMap()))
+                        .mapScript(new Script(ScriptType.INLINE, "native", "stockaggs_map", Collections.emptyMap()))
+                        .combineScript(new Script(ScriptType.INLINE, "native", "stockaggs_combine", Collections.emptyMap()))
+                        .reduceScript(new Script(ScriptType.INLINE, "native", "stockaggs_reduce", Collections.emptyMap())))
                 .execute().actionGet();
 
         assertNoFailures(searchResponse);

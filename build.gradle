@@ -1,3 +1,21 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+if (GradleVersion.current() != GradleVersion.version('2.13')) {
+    throw new GradleException('Gradle 2.13 is required to build this plugin')
+}
+
 buildscript {
     repositories {
         mavenCentral()
@@ -8,21 +26,22 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // Version of elasticsearch
-        classpath "org.elasticsearch.gradle:build-tools:3.0.0-SNAPSHOT"
+        classpath "org.elasticsearch.gradle:build-tools:5.3.0"
     }
 }
 
+
+apply plugin: 'elasticsearch.esplugin'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'elasticsearch.esplugin'
 
 // Version of the plugin
-version = '3.0.0-SNAPSHOT'
+version = '5.3.0.0'
 
 esplugin {
     description 'ElasticSearch Plugin with Native Script Examples.'
     classname 'org.elasticsearch.examples.nativescript.plugin.NativeScriptExamplesPlugin'
+    name 'native-script-example'
 }
 
 dependencies {
@@ -30,7 +49,7 @@ dependencies {
     compile "org.apache.commons:commons-math3:3.5"
 }
 
-compileJava.options.compilerArgs << "-Xlint:-deprecation"
+// compileJava.options.compilerArgs << "-Xlint:-deprecation"
 
 // uncomment to disable 3rd party audit - TODO: temporary workaround until it's fixed in elasticsearch
 thirdPartyAudit.enabled = false

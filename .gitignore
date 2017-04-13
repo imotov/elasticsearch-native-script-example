@@ -13,6 +13,8 @@ generated-resources/
 # IDEA ignores
 .idea/
 *.iml
+*.ipr
+*.iws
 
 ## eclipse ignores
 .project

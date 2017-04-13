@@ -21,6 +21,7 @@ import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
 import org.elasticsearch.test.ESIntegTestCase.Scope;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF_REPLICAS;
 import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF_SHARDS;
@@ -40,6 +41,6 @@ public abstract class AbstractSearchScriptTestCase extends ESIntegTestCase {
 
     @Override
     protected Collection<Class<? extends Plugin>> nodePlugins() {
-        return pluginList(NativeScriptExamplesPlugin.class);
+        return Collections.singletonList(NativeScriptExamplesPlugin.class);
     }
 }

@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * Init script from https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-scripted-metric-aggregation.html
+ * Init script from
+ * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-scripted-metric-aggregation.html
  *
  * _agg['transactions'] = []
  */
@@ -41,6 +42,11 @@ public class InitScriptFactory implements NativeScriptFactory {
                 return null;
             }
         };
+    }
+
+    @Override
+    public String getName() {
+        return "stockaggs_init";
     }
 
     @Override

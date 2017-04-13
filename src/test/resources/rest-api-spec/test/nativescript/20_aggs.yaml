@@ -3,15 +3,18 @@
 setup:
     - do:
         indices.create:
-            index: test_index
+            index: transactions
             body:
                 settings:
                     index.number_of_shards: 1
                     index.number_of_replicas: 0
-                mappings.type1:
-                      properties:
-                          type: {type: string, index: not_analyzed}
-                          amount.type: long
+                mappings:
+                    stock:
+                        properties:
+                            type:
+                                type: keyword
+                            amount:
+                                type: long
 
     - do:
         index: {index: transactions, type: stock, id: 1, body: {type: "sale", amount: 80}}
@@ -30,13 +33,25 @@ setup:
 
 ---
 
-"Primes Test":
+"Aggs Test":
     - do:
         search:
             body:
                 aggs:
                     profit:
-                        scripted_metric: { "init_script" : "stockaggs_init", "map_script" : "stockaggs_map",  "combine_script" : "stockaggs_combine", "reduce_script" : "stockaggs_reduce", "lang": "native"}
+                        scripted_metric:
+                            init_script:
+                                inline: "stockaggs_init"
+                                lang: native
+                            map_script:
+                                inline: "stockaggs_map"
+                                lang: native
+                            combine_script:
+                                inline: "stockaggs_combine"
+                                lang: native
+                            reduce_script:
+                                inline: "stockaggs_reduce"
+                                lang: native
 
     - match: { hits.total: 4}
     - match: { aggregations.profit.value: 170}

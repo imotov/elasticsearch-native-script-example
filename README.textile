@@ -2,7 +2,7 @@ h1. Example of Native Script Plugin for Elasticsearch
 
 h2. Introduction
 
-p. This plugin contains afew  examples of "native script":https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-native.html for Elasticsearch.
+p. This plugin contains a few  examples of "native script":https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-native.html for Elasticsearch.
 
 p. Please make sure to use the correct branch of this repository that corresponds to the version of elasticsearch that you are developing the plugin for.
 
@@ -12,4 +12,4 @@ p. Please make sure to use the correct branch of this repository that correspond
 | "2.0":https://github.com/imotov/elasticsearch-native-script-example/tree/2.0                    | 2.0.x  |
 | "1.x":https://github.com/imotov/elasticsearch-native-script-example/tree/1.x                    | 1.x.x  |
 
-NOTE: to build version a plugin for 5.3.0 you need to use gradle 2.13.
+p. To build the example use @./gradlew assemble@ the plugin can be found in @build/distributions@ directory.

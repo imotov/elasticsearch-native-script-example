@@ -26,7 +26,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "org.elasticsearch.gradle:build-tools:5.3.0"
+        classpath "org.elasticsearch.gradle:build-tools:5.3.1"
     }
 }
 
@@ -36,7 +36,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 // Version of the plugin
-version = '5.3.0.0'
+version = '5.3.1.0'
 
 esplugin {
     description 'ElasticSearch Plugin with Native Script Examples.'
@@ -51,8 +51,8 @@ dependencies {
 
 // compileJava.options.compilerArgs << "-Xlint:-deprecation"
 
-// uncomment to disable 3rd party audit - TODO: temporary workaround until it's fixed in elasticsearch
-thirdPartyAudit.enabled = false
+// uncomment to disable 3rd party audit
+// thirdPartyAudit.enabled = false
 
 // uncomment to disable forbidden patterns checks
 // forbiddenPatterns.enabled = false

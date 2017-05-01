@@ -14,6 +14,8 @@
 
 package org.elasticsearch.examples.nativescript.plugin;
 
+import org.elasticsearch.common.settings.Setting;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.examples.nativescript.script.IsPrimeSearchScriptFactory;
 import org.elasticsearch.examples.nativescript.script.stockaggs.CombineScriptFactory;
 import org.elasticsearch.examples.nativescript.script.stockaggs.InitScriptFactory;
@@ -24,7 +26,10 @@ import org.elasticsearch.plugins.ScriptPlugin;
 import org.elasticsearch.script.NativeScriptFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import static org.elasticsearch.examples.nativescript.script.IsPrimeSearchScriptFactory.PRIME_SCRIPT_DEFAULT_FIELD_NAME;
 
 /**
  * This class is instantiated when Elasticsearch loads the plugin for the
@@ -33,27 +38,21 @@ import java.util.List;
  */
 public class NativeScriptExamplesPlugin extends Plugin implements ScriptPlugin {
 
-//    public void onModule(ScriptModule module) {
-//        // Register each script that we defined in this plugin
-//        module.registerScript("is_prime", IsPrimeSearchScript.Factory.class);
-//        module.registerScript("lookup", LookupScript.Factory.class);
-//        module.registerScript("random", RandomSortScriptFactory.class);
-//        module.registerScript("popularity", PopularityScoreScriptFactory.class);
-//        module.registerScript(TFIDFScoreScript.SCRIPT_NAME, TFIDFScoreScript.Factory.class);
-//        module.registerScript(CosineSimilarityScoreScript.SCRIPT_NAME, CosineSimilarityScoreScript.Factory.class);
-//        module.registerScript(PhraseScoreScript.SCRIPT_NAME, PhraseScoreScript.Factory.class);
-//        module.registerScript(LanguageModelScoreScript.SCRIPT_NAME, LanguageModelScoreScript.Factory.class);
-//        // Scripted Metric Aggregation Scripts
-//        module.registerScript("stockaggs_init", InitScriptFactory.class);
-//        module.registerScript("stockaggs_map", MapScriptFactory.class);
-//        module.registerScript("stockaggs_combine", CombineScriptFactory.class);
-//        module.registerScript("stockaggs_reduce", ReduceScriptFactory.class);
-//    }
+    private final Settings settings;
+
+    public NativeScriptExamplesPlugin(Settings settings) {
+        this.settings = settings;
+    }
+
+    @Override
+    public List<Setting<?>> getSettings() {
+        return Collections.singletonList(PRIME_SCRIPT_DEFAULT_FIELD_NAME);
+    }
 
     @Override
     public List<NativeScriptFactory> getNativeScripts() {
         return Arrays.asList(
-            new IsPrimeSearchScriptFactory(),
+            new IsPrimeSearchScriptFactory(settings),
             new InitScriptFactory(),
             new MapScriptFactory(),
             new CombineScriptFactory(),

@@ -16,9 +16,10 @@ package org.elasticsearch.examples.nativescript.script;
 
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -39,18 +40,31 @@ public class IsPrimeSearchScriptTests extends AbstractSearchScriptTestCase {
 
     public static int[] PRIMES_10 = new int[]{2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
+    @Override
+    protected Settings nodeSettings(int nodeOrdinal) {
+        return Settings.builder().put(super.nodeSettings(nodeOrdinal))
+            .put(IsPrimeSearchScriptFactory.PRIME_SCRIPT_DEFAULT_FIELD_NAME.getKey(), "my_number").build();
+    }
+
     public void testIsPrimeScript() throws Exception {
+
+        boolean useDefaultField = randomBoolean(); // Randomly test with default and non-default field
+        String fieldName;
+        if (useDefaultField) {
+            fieldName = "my_number";
+        } else {
+            fieldName = "number";
+        }
 
         // Create a new index
         String mapping = XContentFactory.jsonBuilder().startObject().startObject("type")
             .startObject("properties")
             .startObject("name").field("type", "string").endObject()
-            .startObject("number").field("type", "integer").endObject()
+            .startObject(fieldName).field("type", "integer").endObject()
             .endObject().endObject().endObject()
             .string();
 
-        assertAcked(prepareCreate("test")
-            .addMapping("type", mapping));
+        assertAcked(prepareCreate("test").addMapping("type", mapping, XContentType.JSON));
 
         List<IndexRequestBuilder> indexBuilders = new ArrayList<IndexRequestBuilder>();
         // Index 100 records (0..99)
@@ -59,7 +73,7 @@ public class IsPrimeSearchScriptTests extends AbstractSearchScriptTestCase {
                 client().prepareIndex("test", "type", Integer.toString(i))
                     .setSource(XContentFactory.jsonBuilder().startObject()
                         .field("name", "rec " + i)
-                        .field("number", i)
+                        .field(fieldName, i)
                         .endObject()));
         }
         // Index a few records with empty number
@@ -74,13 +88,15 @@ public class IsPrimeSearchScriptTests extends AbstractSearchScriptTestCase {
         indexRandom(true, indexBuilders);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("field", "number");
+        if (!useDefaultField) {
+            params.put("field", fieldName);
+        }
         // Retrieve first 10 prime records
         SearchResponse searchResponse = client().prepareSearch("test")
             .setQuery(scriptQuery(new Script(ScriptType.INLINE, "native", "is_prime", params)))
             .setFetchSource("name", null)
             .setSize(10)
-            .addSort("number", SortOrder.ASC)
+            .addSort(fieldName, SortOrder.ASC)
             .execute().actionGet();
 
         assertNoFailures(searchResponse);
@@ -94,14 +110,16 @@ public class IsPrimeSearchScriptTests extends AbstractSearchScriptTestCase {
         }
 
         params = new HashMap<>();
-        params.put("field", "number");
+        if (!useDefaultField) {
+            params.put("field", fieldName);
+        }
         params.put("certainty", 0);
         // Check certainty parameter - with certainty == 0, it should return all numbers, but only if numbers are present
         searchResponse = client().prepareSearch("test")
             .setQuery(scriptQuery(new Script(ScriptType.INLINE, "native", "is_prime", params)))
             .setFetchSource("name", null)
             .setSize(10)
-            .addSort("number", SortOrder.ASC)
+            .addSort(fieldName, SortOrder.ASC)
             .execute().actionGet();
         assertNoFailures(searchResponse);
         // With certainty 0 no check is done so it should return all numbers

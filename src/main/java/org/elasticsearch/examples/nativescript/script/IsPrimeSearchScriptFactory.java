@@ -17,7 +17,9 @@ package org.elasticsearch.examples.nativescript.script;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.elasticsearch.script.ScriptException;
+import org.elasticsearch.common.Strings;
+import org.elasticsearch.common.settings.Setting;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.xcontent.support.XContentMapValues;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
@@ -34,7 +36,16 @@ import org.elasticsearch.script.NativeScriptFactory;
  * method when plugin is loaded.
  */
 public class IsPrimeSearchScriptFactory implements NativeScriptFactory {
+    // Plugins can use elasticsearch settings and even define their own settings
+    // Here we are defining a settings from default value of the prime field
+    public static final Setting<String> PRIME_SCRIPT_DEFAULT_FIELD_NAME =
+        Setting.simpleString("my_scripts.prime.default_field_name", Setting.Property.NodeScope);
 
+    public final String defaultFieldName;
+
+    public IsPrimeSearchScriptFactory(Settings settings) {
+        defaultFieldName = PRIME_SCRIPT_DEFAULT_FIELD_NAME.get(settings);
+    }
     /**
      * This method is called for every search on every shard.
      *
@@ -45,8 +56,8 @@ public class IsPrimeSearchScriptFactory implements NativeScriptFactory {
     public ExecutableScript newScript(@Nullable Map<String, Object> params) {
         // Example of a mandatory string parameter
         // The XContentMapValues helper class can be used to simplify parameter parsing
-        String fieldName = params == null ? null : XContentMapValues.nodeStringValue(params.get("field"), null);
-        if (fieldName == null) {
+        String fieldName = params == null ? null : XContentMapValues.nodeStringValue(params.get("field"), defaultFieldName);
+        if (!Strings.hasLength(fieldName)) {
             throw new IllegalArgumentException("Missing the field parameter");
         }
 

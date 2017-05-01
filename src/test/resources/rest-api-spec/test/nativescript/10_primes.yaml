@@ -14,24 +14,23 @@ setup:
                           number.type: integer
 
     - do:
-        index: {index: test_index, type: type1, id: 1, body: {name: "rec 1", number: 1}}
+        index: {index: test_index, type: type1, id: 1, body: {name: "rec 1", number: 1, my_number: 6}}
 
     - do:
-        index: {index: test_index, type: type1, id: 2, body: {name: "rec 2", number: 2}}
+        index: {index: test_index, type: type1, id: 2, body: {name: "rec 2", number: 2, my_number: 7}}
 
     - do:
-        index: {index: test_index, type: type1, id: 3, body: {name: "rec 3", number: 3}}
+        index: {index: test_index, type: type1, id: 3, body: {name: "rec 3", number: 3, my_number: 8}}
 
     - do:
-        index: {index: test_index, type: type1, id: 4, body: {name: "rec 4", number: 4}}
+        index: {index: test_index, type: type1, id: 4, body: {name: "rec 4", number: 4, my_number: 9}}
 
     - do:
-        index: {index: test_index, type: type1, id: 5, body: {name: "rec 5", number: 5}}
+        index: {index: test_index, type: type1, id: 5, body: {name: "rec 5", number: 5, my_number: 10}}
     - do:
         indices.refresh: {}
 
 ---
-
 "Primes Test":
     - do:
         search:
@@ -47,3 +46,18 @@ setup:
                                         field: number
 
     - match: { hits.total: 3}
+
+---
+"Primes Test with default field name":
+    - do:
+        search:
+            body:
+                query:
+                    constant_score:
+                        filter:
+                            script:
+                                script:
+                                    inline: is_prime
+                                    lang: native
+
+    - match: { hits.total: 1}

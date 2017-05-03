@@ -17,8 +17,8 @@ package org.elasticsearch.examples.nativescript.script;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.script.ScriptType;
 
 import java.util.ArrayList;
@@ -47,10 +47,9 @@ public class ScriptedMetricAggsScriptTests extends AbstractSearchScriptTestCase 
                 .endObject().endObject().endObject()
                 .string();
 
-        assertAcked(prepareCreate("transactions")
-                .addMapping("stock", stockMapping));
+        assertAcked(prepareCreate("transactions").addMapping("stock", stockMapping, XContentType.JSON));
 
-        List<IndexRequestBuilder> indexBuilders = new ArrayList<IndexRequestBuilder>();
+        List<IndexRequestBuilder> indexBuilders = new ArrayList<>();
         // Index stock records:
         indexBuilders.add(client().prepareIndex("transactions", "stock", "1").setSource("type", "sale", "amount", 80));
         indexBuilders.add(client().prepareIndex("transactions", "stock", "2").setSource("type", "cost", "amount", 10));
@@ -77,7 +76,7 @@ public class ScriptedMetricAggsScriptTests extends AbstractSearchScriptTestCase 
         assertHitCount(searchResponse, 4);
 
         // The profit should be 170
-        assertThat((long) searchResponse.getAggregations().get("profit").getProperty("value"), equalTo(170L));
+        assertThat(searchResponse.getAggregations().get("profit").getProperty("value"), equalTo(170L));
     }
 
 

@@ -28,10 +28,12 @@ curl -s "localhost:9200/test/type1/_search?pretty=true" -d '{
         "bool": {
             "filter": {
                 "script": {
-                    "script": "is_prime",
-                    "lang": "native",
-                    "params": {
-                        "field": "number"
+                    "script": {
+                        "inline": "is_prime",
+                        "lang": "native",
+                        "params": {
+                            "field": "number"
+                        }
                     }
                 }
             }

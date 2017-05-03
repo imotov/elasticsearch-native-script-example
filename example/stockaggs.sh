@@ -35,11 +35,22 @@ curl -s -XGET "localhost:9200/transactions/stock/_search?pretty=true" -d '{
     "aggs": {
         "profit": {
             "scripted_metric": {
-                "init_script" : "stockaggs_init",
-                "map_script" : "stockaggs_map",
-                "combine_script" : "stockaggs_combine",
-                "reduce_script" : "stockaggs_reduce",
-                "lang": "native"
+                "init_script" : {
+                    "inline": "stockaggs_init",
+                    "lang": "native"
+                },
+                "map_script" : {
+                    "inline": "stockaggs_map",
+                    "lang": "native"
+                },
+                "combine_script" : {
+                    "inline": "stockaggs_combine",
+                    "lang": "native"
+                },
+                "reduce_script" : {
+                    "inline": "stockaggs_reduce",
+                    "lang": "native"
+                }
             }
         }
     },

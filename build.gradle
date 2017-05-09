@@ -12,10 +12,6 @@
  * limitations under the License.
  */
 
-if (GradleVersion.current() != GradleVersion.version('2.13')) {
-    throw new GradleException('Gradle 2.13 is required to build this plugin')
-}
-
 buildscript {
     repositories {
         mavenCentral()
@@ -26,7 +22,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "org.elasticsearch.gradle:build-tools:5.3.1"
+        classpath "org.elasticsearch.gradle:build-tools:5.4.0"
     }
 }
 
@@ -36,7 +32,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 // Version of the plugin
-version = '5.3.1.0'
+version = '5.4.0.0'
 
 esplugin {
     description 'ElasticSearch Plugin with Native Script Examples.'

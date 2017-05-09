@@ -20,6 +20,8 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
+import org.elasticsearch.search.aggregations.InternalAggregation;
+import org.elasticsearch.search.aggregations.metrics.scripted.ScriptedMetric;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +78,7 @@ public class ScriptedMetricAggsScriptTests extends AbstractSearchScriptTestCase 
         assertHitCount(searchResponse, 4);
 
         // The profit should be 170
-        assertThat(searchResponse.getAggregations().get("profit").getProperty("value"), equalTo(170L));
+        assertThat(((InternalAggregation)searchResponse.getAggregations().get("profit")).getProperty("value"), equalTo(170L));
     }
 
 

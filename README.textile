@@ -1,5 +1,10 @@
 h1. Example of Native Script Plugin for Elasticsearch
 
+h2. Important Deprecation Note
+
+p. Please note that native scripts were "deprecated in v5.5.0":https://github.com/elastic/elasticsearch/pull/24692 and "removed in v6.0.0":https://github.com/elastic/elasticsearch/pull/24726. Consider migrating your native scripts to the ScriptEngine. Please see "elastic/elasticsearch#24726":https://github.com/elastic/elasticsearch/pull/24726 for more information. 
+
+
 h2. Introduction
 
 p. This plugin contains a few  examples of "native script":https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-native.html for Elasticsearch.
@@ -7,7 +12,8 @@ p. This plugin contains a few  examples of "native script":https://www.elastic.c
 p. Please make sure to use the correct branch of this repository that corresponds to the version of elasticsearch that you are developing the plugin for.
 
 |_. Example Plugin Branch |_.  Elasticsearch   |
-| "master":https://github.com/imotov/elasticsearch-native-script-example                          | 5.3.0  |
+| "master":https://github.com/imotov/elasticsearch-native-script-example                          | 5.4.0  |
+| "5.3":https://github.com/imotov/elasticsearch-native-script-example/tree/5.3                    | 5.3.1  |
 | "2.x":https://github.com/imotov/elasticsearch-native-script-example/tree/2.x                    | 2.x.x  |
 | "2.0":https://github.com/imotov/elasticsearch-native-script-example/tree/2.0                    | 2.0.x  |
 | "1.x":https://github.com/imotov/elasticsearch-native-script-example/tree/1.x                    | 1.x.x  |
